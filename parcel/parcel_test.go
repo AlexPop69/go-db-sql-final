@@ -1,4 +1,4 @@
-package main
+package parcel
 
 import (
 	"database/sql"
@@ -8,6 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "modernc.org/sqlite"
 )
 
 var (
@@ -17,6 +18,10 @@ var (
 	randSource = rand.NewSource(time.Now().UnixNano())
 	// randRange использует randSource для генерации случайных чисел
 	randRange = rand.New(randSource)
+)
+
+const (
+	PathTestDB = "test.db"
 )
 
 // getTestParcel возвращает тестовую посылку
@@ -32,7 +37,7 @@ func getTestParcel() Parcel {
 // TestAddGetDelete проверяет добавление, получение и удаление посылки
 func TestAddGetDelete(t *testing.T) {
 	// prepare
-	db, err := sql.Open(DBDriver, PathDB)
+	db, err := sql.Open(DBDriver, PathTestDB)
 	require.NoError(t, err)
 	defer db.Close()
 
@@ -63,7 +68,7 @@ func TestAddGetDelete(t *testing.T) {
 // TestSetAddress проверяет обновление адреса
 func TestSetAddress(t *testing.T) {
 	// prepare
-	db, err := sql.Open(DBDriver, PathDB)
+	db, err := sql.Open(DBDriver, PathTestDB)
 	require.NoError(t, err)
 	defer db.Close()
 
@@ -91,7 +96,7 @@ func TestSetAddress(t *testing.T) {
 // TestSetStatus проверяет обновление статуса
 func TestSetStatus(t *testing.T) {
 	// prepare
-	db, err := sql.Open(DBDriver, PathDB)
+	db, err := sql.Open(DBDriver, PathTestDB)
 	require.NoError(t, err)
 	defer db.Close()
 
@@ -119,7 +124,7 @@ func TestSetStatus(t *testing.T) {
 // TestGetByClient проверяет получение посылок по идентификатору клиента
 func TestGetByClient(t *testing.T) {
 	// prepare
-	db, err := sql.Open(DBDriver, PathDB)
+	db, err := sql.Open(DBDriver, PathTestDB)
 	require.NoError(t, err)
 	defer db.Close()
 
