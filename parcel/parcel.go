@@ -2,7 +2,6 @@ package parcel
 
 import (
 	"database/sql"
-	"log"
 )
 
 const (
@@ -36,13 +35,11 @@ func (s ParcelStore) Add(p Parcel) (int, error) {
 		sql.Named("created_at", p.CreatedAt),
 	)
 	if err != nil {
-		log.Println(err)
 		return 0, err
 	}
 
 	id, err := ins.LastInsertId()
 	if err != nil {
-		log.Println(err)
 		return 0, err
 	}
 	return int(id), nil
@@ -58,7 +55,6 @@ func (s ParcelStore) Get(number int) (Parcel, error) {
 	)
 	err := row.Scan(&parcel.Client, &parcel.Status, &parcel.Address, &parcel.CreatedAt)
 	if err != nil {
-		log.Println(err)
 		return parcel, err
 	}
 	return parcel, nil
@@ -71,7 +67,6 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 		sql.Named("client", client),
 	)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -83,7 +78,6 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 
 		err := rows.Scan(&parcel.Number, &parcel.Client, &parcel.Status, &parcel.Address, &parcel.CreatedAt)
 		if err != nil {
-			log.Println(err)
 			return nil, err
 		}
 
@@ -91,7 +85,6 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 	}
 
 	if err := rows.Err(); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -106,7 +99,6 @@ func (s ParcelStore) SetStatus(number int, status string) error {
 		sql.Named("number", number),
 	)
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -122,7 +114,6 @@ func (s ParcelStore) SetAddress(number int, address string) error {
 		sql.Named("status", ParcelStatusRegistered),
 	)
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -137,7 +128,6 @@ func (s ParcelStore) Delete(number int) error {
 		sql.Named("status", ParcelStatusRegistered),
 	)
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 

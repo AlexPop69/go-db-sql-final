@@ -2,6 +2,7 @@ package parcel
 
 import (
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -34,7 +35,7 @@ func (s ParcelService) Register(client int, address string) (Parcel, error) {
 
 	parcel.Number = id
 
-	fmt.Printf("Новая посылка № %d на адрес %s от клиента с идентификатором %d зарегистрирована %s\n",
+	log.Printf("Новая посылка № %d на адрес %s от клиента с идентификатором %d зарегистрирована %s\n",
 		parcel.Number, parcel.Address, parcel.Client, parcel.CreatedAt)
 
 	return parcel, nil
@@ -46,12 +47,12 @@ func (s ParcelService) PrintClientParcels(client int) error {
 		return err
 	}
 
-	fmt.Printf("Посылки клиента %d:\n", client)
+	log.Printf("Посылки клиента %d:\n", client)
 	for _, parcel := range parcels {
 		fmt.Printf("Посылка № %d на адрес %s от клиента с идентификатором %d зарегистрирована %s, статус %s\n",
 			parcel.Number, parcel.Address, parcel.Client, parcel.CreatedAt, parcel.Status)
 	}
-	fmt.Println()
+	log.Println()
 
 	return nil
 }
@@ -72,7 +73,7 @@ func (s ParcelService) NextStatus(number int) error {
 		return nil
 	}
 
-	fmt.Printf("У посылки № %d новый статус: %s\n", number, nextStatus)
+	log.Printf("У посылки № %d новый статус: %s\n", number, nextStatus)
 
 	return s.store.SetStatus(number, nextStatus)
 }
